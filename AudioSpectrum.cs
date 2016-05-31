@@ -83,9 +83,12 @@ namespace AudioSpectrum
         {
             if (!string.IsNullOrWhiteSpace(selectedDevice.settingValue))
             {
-                foreach (var dev in Devices)
+                foreach (Device dev in Devices)
+                {
                     dev.Dispose();
-                this.Devices.Clear();
+                    //Devices.Remove(dev);
+                }
+                //this.Devices.Clear();
                 var str = (selectedDevice.settingValue as string);
                 var array = str.Split(' ');
                 int devindex = Convert.ToInt32(array[0]);
@@ -126,8 +129,8 @@ namespace AudioSpectrum
             _lines = channels;
             for (int i = 0; i < channels; i++)
             {
-                InputChannelTypes.JoyAxis channel = new InputChannelTypes.JoyAxis("Channel "+(i+1).ToString(), "") { min_Value = 0, max_Value = 1 };
-                InputChannels.Add(channel);
+                JoyAxis channel = new JoyAxis("Channel "+(i+1).ToString(), DataFlowDirection.Input, "") { min_Value = 0, max_Value = 1 };
+                Channels.Add(channel);
             }
 
             this.devindex = devindex;
@@ -189,7 +192,7 @@ namespace AudioSpectrum
                 }
                 y = (Math.Sqrt(peak));
 
-                InputChannels[x].Value = y;
+                Channels[x].Value = y;
             }
 
 
